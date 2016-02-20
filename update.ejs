@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<form id = "contactform" action="new" method="post">
+<div>
+<input type="radio" id = "a1" name="abb" value="Mr." checked> Mr.
+<input type="radio" id = "a2" name="abb" value="Mrs."> Mrs.
+<input type="radio" id = "a3" name="abb" value="Ms."> Ms.
+<input type="radio" id = "a4" name="abb" value="Dr."> Dr.
+<br>
+</div>
+First Name: <input type="text" name="fname" value= "<%=fname %>"autofocus required>
+Last Name: <input type= "text" name="lname" value= "<%=lname %>" required><br>
+Street: <input type="text" name="address" value= "<%=address %>" required>
+City: <input type= "text" name="city" value= "<%=city%>"required><br>
+State: <input type= "text" name="loc" value= "<%=state%>"required>
+Zip: <input type="text" name="ZipCode" value= "<%=zip%>"required><br>
+Phone: <input type="text" name="Phone" value= "<%=phone%>"required><br>
+Email: <input type="text" name="Email" value= "<%=email%>"required><br>
+<div>
+How may we contact you? <input type="checkbox" name="cmethod" value="phone"> Phone
+<input type="checkbox" name="cmethod" value="mail"> Mail
+<input type="checkbox" name="cmethod" value="e-mail"> E-mail
+<input type="checkbox" name="cmethod" value="Any" checked> Any<br>
+<input type="hidden" name="_id" value= "<%=_id%>"></input>
+<input type="submit">
+</div>
+</form>
+</body>
+<style type= "text/css">
+#contactform {
+  background-color: red;
+  text-align: center;
+}
+body {
+  background-color: red;
+}
+</style>
+</html>

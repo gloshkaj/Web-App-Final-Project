@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+	<head>
+	</head>
+	<body>
+		<p>Thank you for updating your contact information!</p>
+		<% for ( property in cinfo ) { %>
+			<p><%= property %> : <%= cinfo[property] %></p>
+			<% } %>
+			<a href="contacts">Contact Table</a>
+		</body>
+		<style type= "text/css">
+		p {
+			color: red;
+		}
+		body {
+			background-color: black;
+		}
+		</style>
+		</html>

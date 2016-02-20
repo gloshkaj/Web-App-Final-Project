@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Contact Table</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4OGILXJh2TNxadj1gP94iP4QLmrTARUI&sensor=true">
+        </script>
+        <script type = "text/javascript">
+        var map;
+        var center;
+        var latlngs = [];
+        var elts = [];
+        var marker;
+
+        function initMap() {
+          var schoolLatLong = {lat: 41.08394699999999, lng: -74.176609};
+          center = { center: schoolLatLong, zoom: 8};
+          map = new google.maps.Map(document.getElementById('google'), center);
+          var x = document.getElementsByTagName("th");
+          console.log(x.length);
+          for (var i = 0; i < x.length; i++) {
+            elts.push(x[i].innerHTML);
+            console.log(elts[i]);
+            getLocationCoordinate(elts[i]);
+          }
+        }
+        function zoom(r) {
+          var i = r.parentNode.parentNode.rowIndex;
+          getCenterPoint(document.getElementById("Contacts").rows[i].cells[2].innerHTML);
+        }
+        function getLocationCoordinate(address) {
+
+            var position = {};
+            $.ajax({
+                url : 'http://maps.google.com/maps/api/geocode/json',
+                type : 'GET',
+                data : {
+                    address : address,
+                    sensor : false
+                },
+                async : false,
+                success : function(result) {
+
+                    try {
+                        position.lat = result.results[0].geometry.location.lat;
+                        position.lng = result.results[0].geometry.location.lng;
+                    } catch(err) {
+                        position = null;
+                    }
+
+                }
+            });
+            console.log(position.lat);
+            console.log(position.lng);
+            var latlng = new google.maps.LatLng(position.lat, position.lng);
+            console.log(latlng);
+            latlngs.push(latlng);
+            marker = new google.maps.Marker({
+            position: latlng,
+            map: map
+            });
+        }
+
+        function getCenterPoint(address) {
+
+            var position = {};
+            $.ajax({
+                url : 'http://maps.google.com/maps/api/geocode/json',
+                type : 'GET',
+                data : {
+                    address : address,
+                    sensor : false
+                },
+                async : false,
+                success : function(result) {
+
+                    try {
+                        position.lat = result.results[0].geometry.location.lat;
+                        position.lng = result.results[0].geometry.location.lng;
+                    } catch(err) {
+                        position = null;
+                    }
+
+                }
+            });
+            console.log(position.lat);
+            console.log(position.lng);
+            var latlng = new google.maps.LatLng(position.lat, position.lng);
+            center = { center: latlng, zoom: 8};
+            map = new google.maps.Map(document.getElementById('google'), center);
+            for (var i = 0; i < latlngs.length; i++) {
+              marker = new google.maps.Marker({
+              position: latlngs[i],
+              map: map
+              });
+            }
+        }
+        </script>
+        <style type="text/css">
+        html, body { height: 100%; margin: 0; padding: 0; }
+              #google {
+                position: fixed;
+                width:1200px;
+                height:500px;
+                left: 10px;
+              }
+          body {
+            background-color : black;
+          }
+          th {
+            color : blue;
+          }
+          td {
+            color: red;
+          }
+        </style>
+    </head>
+    <body onload = "initMap()">
+        <table id= "Contacts" align = "center" border = "1" width = "1000">
+            <caption>Contact Information</caption>
+            <tr>
+                <td>Contact ID</td>
+                <td>Person's First and Last Name</td>
+                <td>Person's Address Information</td>
+                <td>Person's Phone Number</td>
+                <td>Person's Email Address</td>
+                <td>Person's Preferred Contact Mediums</td>
+                <td>Update Contact</td>
+                <td>Delete Contact</td>
+                <td>Center</td>
+            </tr>
+            <% for (var i = 0; i < cinfo.length; i++) { %>
+              <tr>
+                <td><%= cinfo[i]._id %></td>
+                <td><%= cinfo[i].Name %></td>
+                <th><%= cinfo[i].Address %></th>
+                <td><%= cinfo[i].Phone %></td>
+                <td><%= cinfo[i].Email %></td>
+                <td><%= cinfo[i].Methods %></td>
+                <td><a href="update?info= <%=cinfo[i]._id%>">Update</a></td>
+                <td><a href="delete?info= <%=cinfo[i]._id%>">Delete</td>
+                <td><input type= "button" value = "Zoom" onclick = "zoom(this)"></td>
+              </tr>
+              <% } %>
+        </table>
+        <a href="contact">Enter another contact</a>
+        <a href="done">Remove All Contacts</a>
+        <div id = "google"></div>
+    </body>
+</html>
